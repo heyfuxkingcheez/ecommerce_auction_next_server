@@ -11,6 +11,8 @@ import Cookies from 'js-cookie';
 interface AuthContextType {
   isLoggedIn: boolean;
   logout: () => void;
+  token: string | null;
+  checkAuthStatus: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,14 +25,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
+  const checkAuthStatus = () => {
     const AccessToken = Cookies.get('AccessToken');
     if (AccessToken) {
       setToken(AccessToken);
       setIsLoggedIn(true);
     } else {
+      setToken(null);
       setIsLoggedIn(false);
     }
+  };
+
+  useEffect(() => {
+    checkAuthStatus();
   }, [token]);
 
   const logout = () => {
@@ -43,7 +50,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, logout, token, checkAuthStatus }}
+    >
       {children}
     </AuthContext.Provider>
   );

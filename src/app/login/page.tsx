@@ -23,14 +23,17 @@ export default function page() {
       const credentials = `${email}:${password}`;
       const base64String = Buffer.from(credentials).toString('base64');
 
-      const response = await fetch('http://localhost:3000/auth/login', {
-        credentials: 'include',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Basic ${base64String}`,
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Basic ${base64String}`,
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Login failed');

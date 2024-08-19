@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMagnifyingGlass,
@@ -13,13 +13,17 @@ import { useAuth } from '../context/AuthContext';
 
 export default function Navigation() {
   const path = usePathname();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, checkAuthStatus } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, [isLoggedIn]);
 
   return (
     <nav className="bg-white shadow-sm">

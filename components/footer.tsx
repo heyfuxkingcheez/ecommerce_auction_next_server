@@ -4,7 +4,7 @@ import { faUser, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 export default function Footer() {
   return (
-    <footer className="bg-white text-black py-6">
+    <footer className="bg-white text-black py-6 w-full z-50 bottom-0">
       <div className="container mx-auto text-center">
         <div className="mb-4">
           <a

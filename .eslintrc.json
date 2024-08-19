@@ -3,13 +3,14 @@
     "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
-    "plugin:prettier/recommended",
-    "prettier"
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "rules": {
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "react/button-has-type": "off"
   }
 }

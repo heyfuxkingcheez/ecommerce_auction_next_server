@@ -1,22 +1,69 @@
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+
+interface User {
+  id: string;
+  nickname: string;
+  email: string;
+  phone_number: string;
+  role: string;
+  image: string;
+}
 
 export default function MyInfo() {
+  const { token, isLoggedIn, checkAuthStatus } = useAuth();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    checkAuthStatus();
+
+    async function fetchData() {
+      try {
+        const userResponse = await fetch('http://localhost:3000/api/users/me', {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `${token}`,
+          },
+        });
+
+        if (!userResponse.ok) {
+          throw Error;
+        }
+
+        const userData = await userResponse.json();
+        setUser(userData);
+      } catch (error) {
+        // console.error(error);
+        throw new Error('유저 정보 불러오기 실패');
+      }
+    }
+
+    if (token && isLoggedIn !== false) {
+      fetchData();
+    }
+  }, [isLoggedIn]);
+
   return (
     <div className="p-8 rounded-lg flex flex-col space-y-8">
       {/* 상단 정보 */}
       <div className="flex justify-between items-start">
         <div className="flex space-x-4">
           {/* 프로필 이미지 */}
-          <div className="w-32 h-32 bg-gray-300 rounded-lg"></div>
+          <img
+            src={`http://localhost:3000${user && user.image}`}
+            className="w-32 h-32 bg-gray-300 rounded-lg"
+          />
           {/* 닉네임 및 이메일 */}
           <div className="flex flex-col justify-center">
-            <h2 className="text-2xl font-bold">닉네임</h2>
-            <p className="text-gray-600">example@gmail.com</p>
+            <h2 className="text-2xl font-bold">{user && user.nickname}</h2>
+            <p className="text-gray-600">{user && user.email}</p>
           </div>
         </div>
         {/* 쿠폰 아이콘 */}
         <div className="flex flex-col items-center">
-          <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <div className="w-12 h-12 bg-gray-300 rounded-full" />
           <p className="text-sm mt-2">쿠폰</p>
         </div>
       </div>
