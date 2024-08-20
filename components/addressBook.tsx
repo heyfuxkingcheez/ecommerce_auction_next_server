@@ -33,12 +33,13 @@ export default function AddressBook() {
         });
 
         if (!userResponse.ok) {
-          throw Error;
+          throw Error();
         }
 
-        const userAddressData = await userResponse.json();
-        if (userAddressData) setAddressData(userAddressData);
+        const responseData = await userResponse.json();
+        if (responseData) setAddressData(responseData);
       } catch (error) {
+        console.error(error);
         throw new Error('유저 정보 불러오기 실패');
       }
     }

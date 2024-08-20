@@ -136,7 +136,11 @@ export default function PaymentInfo() {
         </button>
       </div>
       {/* 카드 추가 팝업 */}
-      <CardPopup isOpen={isPopupOpen} onClose={handlePopupClose} />
+      <CardPopup
+        isOpen={isPopupOpen}
+        onClose={handlePopupClose}
+        setPaymentData={setPaymentData}
+      />
     </div>
   );
 }

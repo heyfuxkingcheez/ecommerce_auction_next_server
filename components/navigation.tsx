@@ -10,12 +10,17 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../context/AuthContext';
+import { NotificationPopup } from './notificationPopup';
 
 export default function Navigation() {
   const path = usePathname();
   const { isLoggedIn, logout, checkAuthStatus } = useAuth();
-
+  const [isNotificationPopup, setIsNotificationPopup] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleNotification = () => {
+    setIsNotificationPopup(!isNotificationPopup);
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -39,7 +44,7 @@ export default function Navigation() {
         </span>
         <span>
           {!isLoggedIn && <Link href="/login">알림</Link>}
-          {isLoggedIn && <Link href="/alarm">알림</Link>}
+          {isLoggedIn && <button onClick={toggleNotification}>알림</button>}
         </span>
         <span>
           {!isLoggedIn && <Link href="/login">로그인</Link>}
@@ -127,7 +132,7 @@ export default function Navigation() {
           </span>
           <span>
             {!isLoggedIn && <Link href="/login">알림</Link>}
-            {isLoggedIn && <Link href="/alarm">알림</Link>}
+            {isLoggedIn && <button onClick={toggleNotification}>알림</button>}
           </span>
           <span>
             {!isLoggedIn && <Link href="/login">로그인</Link>}
@@ -135,6 +140,10 @@ export default function Navigation() {
           </span>
         </div>
       )}
+      <NotificationPopup
+        isOpen={isNotificationPopup}
+        onClose={toggleNotification}
+      />
     </nav>
   );
 }

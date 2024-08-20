@@ -28,11 +28,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const checkAuthStatus = () => {
     const AccessToken = Cookies.get('AccessToken');
     if (AccessToken) {
-      setToken(AccessToken);
       setIsLoggedIn(true);
+      setToken(AccessToken);
     } else {
-      setToken(null);
       setIsLoggedIn(false);
+      setToken(null);
     }
   };
 

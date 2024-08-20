@@ -1,12 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+
+const url = process.env.NEXT_PUBLIC_API_URL;
+
+interface ResAccountType {
+  id: string;
+  bank_name: string;
+  account_number: string;
+  account_holder: string;
+}
 
 export default function Account() {
+  const { isLoggedIn, token } = useAuth();
   const [bankName, setBankName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [accountHolder, setAccountHolder] = useState('');
+  const [accountData, setAccountData] = useState<ResAccountType | null>(null);
 
-  const handleChange = () => {
-    // 변경하기 버튼 클릭 시 처리 로직 추가
+  const handleChange = async (method: 'POST' | 'PUT') => {
+    console.log(method);
+    try {
+      const response = await fetch(`${url}/settlement-accounts/me`, {
+        method,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `${token}`,
+        },
+        body: JSON.stringify({
+          bank_name: bankName,
+          account_holder: accountHolder,
+          account_number: accountNumber,
+        }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw Error(result.error);
+      }
+
+      setAccountData({
+        id: result.id,
+        bank_name: result.bank_name,
+        account_holder: result.account_holder,
+        account_number: result.account_number,
+      });
+      setBankName('');
+      setAccountHolder('');
+      setAccountNumber('');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleAccountNumberChange = (
@@ -29,15 +73,52 @@ export default function Account() {
     }
   };
 
+  useEffect(() => {
+    async function getFetchData() {
+      try {
+        const userResponse = await fetch(`${url}/settlement-accounts/me`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `${token}`,
+          },
+        });
+
+        const userAccountData = await userResponse.json();
+
+        if (!userResponse.ok) {
+          throw Error(userAccountData.error);
+        }
+
+        userAccountData
+          ? setAccountData(userAccountData)
+          : setAccountData(null);
+
+        return;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (token && isLoggedIn !== false) {
+      getFetchData();
+    }
+  }, [setAccountData, token, isLoggedIn]);
+
   return (
     <div className="p-6 max-w-lg mx-auto">
       <h2 className="text-2xl font-bold mb-4">정산 계좌 변경</h2>
 
-      <div className="mb-6 p-4 bg-gray-100 rounded-lg">
+      <div key={accountData?.id} className="mb-6 p-4 bg-gray-100 rounded-lg">
         <p className="text-gray-700">
           <span className="font-semibold">등록된 계좌 정보</span>
         </p>
-        <p>카카오뱅크 3333097013111 / 정기욱</p>
+        <p>
+          {accountData
+            ? `${accountData.bank_name} ${accountData.account_number} / ${accountData.account_holder}`
+            : `등록된 계좌가 없습니다.`}
+        </p>
       </div>
 
       <div className="space-y-6">
@@ -75,7 +156,7 @@ export default function Account() {
             placeholder="- 없이 입력하세요"
             value={accountNumber}
             onChange={handleAccountNumberChange}
-            className="mt-1 block w-full p-2 border-b border-gray-300 focus:outline-none focus:border-black"
+            className="w-full border-b-2 border-gray-300 p-2 focus:outline-none focus:border-black"
           />
         </div>
 
@@ -92,22 +173,36 @@ export default function Account() {
             placeholder="예금주명을 정확히 입력하세요."
             value={accountHolder}
             onChange={handleAccountHolderChange}
-            className="mt-1 block w-full p-2 border-b border-gray-300 focus:outline-none focus:border-black"
+            className="w-full border-b-2 border-gray-300 p-2 focus:outline-none focus:border-black"
           />
         </div>
       </div>
 
-      <button
-        onClick={handleChange}
-        className={`mt-6 w-full py-3 text-white rounded-lg ${
-          bankName && accountNumber && accountHolder
-            ? 'bg-black'
-            : 'bg-gray-200'
-        }`}
-        disabled={!bankName || !accountNumber || !accountHolder}
-      >
-        변경하기
-      </button>
+      {accountData ? (
+        <button
+          onClick={() => handleChange('PUT')}
+          className={`mt-6 w-full py-3 text-white rounded-lg ${
+            bankName && accountNumber && accountHolder
+              ? 'bg-black'
+              : 'bg-gray-200'
+          }`}
+          disabled={!bankName || !accountNumber || !accountHolder}
+        >
+          변경하기
+        </button>
+      ) : (
+        <button
+          onClick={() => handleChange('POST')}
+          className={`mt-6 w-full py-3 text-white rounded-lg ${
+            bankName && accountNumber && accountHolder
+              ? 'bg-black'
+              : 'bg-gray-200'
+          }`}
+          disabled={!bankName || !accountNumber || !accountHolder}
+        >
+          등록하기
+        </button>
+      )}
     </div>
   );
 }

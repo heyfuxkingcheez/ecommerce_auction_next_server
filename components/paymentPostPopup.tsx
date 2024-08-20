@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { ReqCardType } from './paymentInfo';
+import { ReqCardType, ResCardsType } from './paymentInfo';
 import { useAuth } from '../context/AuthContext';
 
 interface CardPopupProps {
   isOpen: boolean;
   onClose: () => void;
+  setPaymentData: React.Dispatch<React.SetStateAction<ResCardsType[]>>;
 }
-
 const url = process.env.NEXT_PUBLIC_API_URL;
 
-const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
+const CardPopup: React.FC<CardPopupProps> = ({
+  isOpen,
+  onClose,
+  setPaymentData,
+}) => {
   const { isLoggedIn, token } = useAuth();
   const [cardData, setCardData] = useState<ReqCardType>({
     number: '',
@@ -26,14 +30,17 @@ const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCardData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setErrors((prev) => ({
-      ...prev,
-      [name]: '', // 입력 중일 때 에러 메시지를 초기화
-    }));
+
+    if (/^\d*$/.test(value)) {
+      setCardData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '', // 입력 중일 때 에러 메시지를 초기화
+      }));
+    }
   };
 
   const validate = (): boolean => {
@@ -82,9 +89,9 @@ const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
 
       const response = await postCardResponse.json();
 
-      if (!response.ok) {
-        throw new Error(response.error);
-      }
+      console.log(response);
+
+      // setPaymentData((pre) => ({ ...pre, response }));
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +134,7 @@ const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
         <label className="block text-black-500 text-sm font-medium mb-1">
           카드 번호
           <input
-            type="number"
+            type="text"
             name="number"
             value={cardData.number}
             onChange={handleInputChange}
@@ -145,7 +152,7 @@ const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
           <label className="block text-black-500 text-sm font-medium mb-1 w-1/2">
             만료 월
             <input
-              type="number"
+              type="text"
               name="expiryMonth"
               value={cardData.expiryMonth}
               onChange={handleInputChange}
@@ -153,8 +160,6 @@ const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
                 errors.expiryMonth ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="MM"
-              min="1"
-              max="12"
             />
             {errors.expiryMonth && (
               <p className="text-red-500 text-sm mt-1">{errors.expiryMonth}</p>
@@ -164,7 +169,7 @@ const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
           <label className="block text-black-500 text-sm font-medium mb-1 w-1/2">
             만료 연도
             <input
-              type="number"
+              type="text"
               name="expiryYear"
               value={cardData.expiryYear}
               onChange={handleInputChange}
@@ -172,8 +177,6 @@ const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
                 errors.expiryYear ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="YY"
-              min="0"
-              max="99"
             />
             {errors.expiryYear && (
               <p className="text-red-500 text-sm mt-1">{errors.expiryYear}</p>
@@ -194,8 +197,6 @@ const CardPopup: React.FC<CardPopupProps> = ({ isOpen, onClose }) => {
                 : 'border-gray-300'
             }`}
             placeholder="생년월일(6자리)"
-            min="100000"
-            max="999999"
           />
           {errors.birthOrBusinessRegistrationNumber && (
             <p className="text-red-500 text-sm mt-1">
