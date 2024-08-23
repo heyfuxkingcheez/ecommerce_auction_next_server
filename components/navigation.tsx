@@ -14,7 +14,7 @@ import { NotificationPopup } from './notificationPopup';
 
 export default function Navigation() {
   const path = usePathname();
-  const { isLoggedIn, logout, checkAuthStatus } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const [isNotificationPopup, setIsNotificationPopup] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -25,10 +25,6 @@ export default function Navigation() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  useEffect(() => {
-    checkAuthStatus();
-  }, [isLoggedIn]);
 
   return (
     <nav className="bg-white shadow-sm">

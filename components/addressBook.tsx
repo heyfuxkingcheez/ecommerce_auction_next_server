@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import AddressPopup from './addressPopup';
 import { useAuth } from '../context/AuthContext';
 
-const url = process.env.NEXT_PUBLIC_API_URL;
+export const url = process.env.NEXT_PUBLIC_API_URL;
 
 export interface AddressType {
   id: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
   address_name: string;
   name: string;
   address: string;
@@ -16,7 +16,7 @@ export interface AddressType {
 }
 
 export default function AddressBook() {
-  const { isLoggedIn, token, checkAuthStatus } = useAuth();
+  const { isLoggedIn, token } = useAuth();
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [addressData, setAddressData] = useState<AddressType[]>([]);
 

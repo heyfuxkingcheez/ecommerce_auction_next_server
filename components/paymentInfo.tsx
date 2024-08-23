@@ -50,6 +50,7 @@ export default function PaymentInfo() {
 
         const userPaymentsData = await userResponse.json();
         if (userPaymentsData) setPaymentData(userPaymentsData);
+        console.log(userPaymentsData);
       } catch (error) {
         throw new Error('유저 정보 불러오기 실패');
       }

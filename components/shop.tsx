@@ -1,10 +1,11 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const url = process.env.NEXT_PUBLIC_API_URL;
 
-interface ItemType {
+export interface ItemType {
   id: string;
   created_at: Date;
   updated_at: Date;
@@ -13,13 +14,22 @@ interface ItemType {
   model_number: string;
   release_price: number;
   release_date: string;
-  images: [];
+  images: [
+    {
+      id: string;
+      created_at: Date;
+      updated_at: Date;
+      order: number;
+      type: number;
+      path: string;
+    },
+  ];
 }
 
 export const Shop = () => {
-  const { isLoggedIn, token } = useAuth();
   const [itemsData, setItemsData] = useState<ItemType[] | null>(null);
   const [cursorData, setCursorData] = useState<string>('');
+  const router = useRouter();
 
   useEffect(() => {
     async function getFetchData() {
@@ -42,9 +52,7 @@ export const Shop = () => {
       }
     }
 
-    if (token && isLoggedIn !== false) {
-      getFetchData();
-    }
+    getFetchData();
   }, []);
 
   return (
@@ -59,7 +67,11 @@ export const Shop = () => {
       <main className="flex-1 p-8 ml-64">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {itemsData?.map((product, index) => (
-            <div key={index} className="w-48 rounded-lg p-4 flex flex-col">
+            <div
+              key={product.id}
+              className="w-48 rounded-lg p-4 flex flex-col"
+              onClick={() => router.push(`/products/${product.id}`)}
+            >
               <img
                 src={`http://localhost:3000/${product.images[0].path}`}
                 className="w-full h-40 mb-4 bg-gray-300 rounded-lg"

@@ -11,7 +11,7 @@ interface User {
 }
 
 export default function ProfileManage() {
-  const { isLoggedIn, token, checkAuthStatus } = useAuth();
+  const { isLoggedIn, token } = useAuth();
   const [user, setUser] = useState<User | null>(null);
 
   const [nickname, setNickname] = useState('');
@@ -118,8 +118,6 @@ export default function ProfileManage() {
   }
 
   useEffect(() => {
-    checkAuthStatus();
-
     async function fetchData() {
       try {
         const userResponse = await fetch('http://localhost:3000/api/users/me', {

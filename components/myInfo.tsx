@@ -11,12 +11,10 @@ interface User {
 }
 
 export default function MyInfo() {
-  const { token, isLoggedIn, checkAuthStatus } = useAuth();
+  const { token, isLoggedIn } = useAuth();
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    checkAuthStatus();
-
     async function fetchData() {
       try {
         const userResponse = await fetch('http://localhost:3000/api/users/me', {

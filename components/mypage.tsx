@@ -13,15 +13,9 @@ import { useAuth } from '../context/AuthContext';
 export default function MyPage() {
   const path = usePathname();
   const router = useRouter();
-  const { checkAuthStatus, isLoggedIn } = useAuth();
+  const {  isLoggedIn } = useAuth();
 
-  useEffect(() => {
-    checkAuthStatus();
-
-    if (!isLoggedIn) {
-      router.push('/login');
-    }
-  }, [isLoggedIn, router]);
+  
 
   return (
     <div className="min-h-screen flex bg-gray-50">

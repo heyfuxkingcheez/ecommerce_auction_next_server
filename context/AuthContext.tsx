@@ -7,12 +7,12 @@ import {
   useState,
 } from 'react';
 import Cookies from 'js-cookie';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface AuthContextType {
   isLoggedIn: boolean;
   logout: () => void;
   token: string | null;
-  checkAuthStatus: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,35 +24,34 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [token, setToken] = useState<string | null>(null);
-
-  const checkAuthStatus = () => {
-    const AccessToken = Cookies.get('AccessToken');
-    if (AccessToken) {
-      setIsLoggedIn(true);
-      setToken(AccessToken);
-    } else {
-      setIsLoggedIn(false);
-      setToken(null);
-    }
-  };
+  const router = useRouter();
+  const pathName = usePathname();
 
   useEffect(() => {
-    checkAuthStatus();
-  }, [token]);
+    const checkAuth = () => {
+      const AccessToken = Cookies.get('AccessToken');
+      if (AccessToken) {
+        setIsLoggedIn(true);
+        setToken(AccessToken);
+      } else {
+        setIsLoggedIn(false);
+        setToken(null);
+        router.push('/login');
+      }
+    };
+
+    checkAuth();
+  }, [pathName]);
 
   const logout = () => {
     Cookies.remove('AccessToken');
     Cookies.remove('RefreshToken');
     setToken(null);
     setIsLoggedIn(false);
-
-    window.location.href = '/';
   };
 
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn, logout, token, checkAuthStatus }}
-    >
+    <AuthContext.Provider value={{ isLoggedIn, logout, token }}>
       {children}
     </AuthContext.Provider>
   );
