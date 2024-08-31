@@ -23,9 +23,7 @@ const SalePage = ({ params }: { params: { id: string } }) => {
     setIsBidSubmitted(true);
   };
 
-  useEffect(() => {
-    console.log(saleBidData);
-  }, [saleBidData]);
+  useEffect(() => {}, [saleBidData]);
   return (
     <div>
       <SaleBidItemComponent params={params} setSaleBidData={setSaleBidData} />

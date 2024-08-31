@@ -70,7 +70,6 @@ const PurchaseBidPopup: React.FC<BidPopupProps> = ({
           throw Error(responseData.error);
         }
         if (responseData) setPriceData(responseData);
-        console.log(responseData);
       } catch (error) {
         console.error(error);
       }

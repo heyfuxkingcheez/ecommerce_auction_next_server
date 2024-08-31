@@ -18,7 +18,6 @@ export default function Account() {
   const [accountData, setAccountData] = useState<ResAccountType | null>(null);
 
   const handleChange = async (method: 'POST' | 'PUT') => {
-    console.log(method);
     try {
       const response = await fetch(`${url}/settlement-accounts/me`, {
         method,

@@ -11,10 +11,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../context/AuthContext';
 import { NotificationPopup } from './notificationPopup';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export default function Navigation() {
   const path = usePathname();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, token } = useAuth();
   const [isNotificationPopup, setIsNotificationPopup] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

@@ -40,7 +40,6 @@ const PurchaseBidItemComponent: React.FC<PurchaseBidComponentProps> = ({
         }
 
         if (responseData) {
-          console.log('itemOptionId =>', responseData.id);
           setItemData(responseData);
           setPurchaseBidData((prevData) => ({
             ...prevData,

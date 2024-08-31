@@ -25,8 +25,6 @@ const SaleBidConfirmComponent: React.FC<SaleBidConfirmComponentProps> = ({
     immediatePurchasePrice - inspectionFee - serviceFee - shippingFee;
 
   const handleBidConfirmFetch = async () => {
-    console.log(saleBidData);
-
     try {
       const itemOptionPriceResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auctions/sale-bid`,

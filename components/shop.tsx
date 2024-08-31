@@ -69,22 +69,28 @@ export const Shop = () => {
           {itemsData?.map((product, index) => (
             <div
               key={product.id}
-              className="w-48 rounded-lg p-4 flex flex-col"
+              className="w-48 rounded-lg p-4 flex flex-col justify-between"
               onClick={() => router.push(`/products/${product.id}`)}
             >
               <img
                 src={`http://localhost:3000/${product.images[0].path}`}
-                className="w-full h-40 mb-4 bg-gray-300 rounded-lg"
+                className="w-full h-40 mb-4 bg-gray-300 rounded-lg object-cover"
               />
-              <div className="pl-1">
-                <p className="text-sm font-semibold text-lg">
-                  {product.item_name_kr}
-                </p>
-                <p className="text-xs text-black-500">{product.item_name_kr}</p>
-                <p className="text-xs text-gray-500">{product.item_name_en}</p>
-                <p className="text-sm font-bold text-lg mt-2">
-                  {`${product.release_price}원`}
-                </p>
+              <div className="flex-grow">
+                <div className="pl-1">
+                  <p className="text-sm font-semibold text-lg">
+                    {product.item_name_kr}
+                  </p>
+                  <p className="text-xs text-black-500">
+                    {product.item_name_kr}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {product.item_name_en}
+                  </p>
+                  <p className="text-sm font-bold text-lg mt-2">
+                    {`${product.release_price}원`}
+                  </p>
+                </div>
               </div>
             </div>
           ))}

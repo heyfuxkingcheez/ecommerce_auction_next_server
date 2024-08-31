@@ -89,8 +89,6 @@ const CardPopup: React.FC<CardPopupProps> = ({
 
       const response = await postCardResponse.json();
 
-      console.log(response);
-
       // setPaymentData((pre) => ({ ...pre, response }));
     } catch (error) {
       console.log(error);

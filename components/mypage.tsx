@@ -9,13 +9,12 @@ import AddressBook from './addressBook';
 import PaymentInfo from './paymentInfo';
 import Account from './account';
 import { useAuth } from '../context/AuthContext';
+import MyCoupons from './mycoupons';
 
 export default function MyPage() {
   const path = usePathname();
   const router = useRouter();
-  const {  isLoggedIn } = useAuth();
-
-  
+  const { isLoggedIn } = useAuth();
 
   return (
     <div className="min-h-screen flex bg-gray-50">
@@ -86,6 +85,15 @@ export default function MyPage() {
               <Link href="/mypage/sales">판매 내역</Link>
             )}
           </li>
+          <li>
+            {path === '/mypage/coupons' ? (
+              <Link className="font-semibold mt-8" href="/mypage/coupons">
+                쿠폰
+              </Link>
+            ) : (
+              <Link href="/mypage/coupons">쿠폰</Link>
+            )}
+          </li>
         </ul>
       </aside>
 
@@ -97,6 +105,7 @@ export default function MyPage() {
           {path === '/mypage/address' && <AddressBook />}
           {path === '/mypage/payments' && <PaymentInfo />}
           {path === '/mypage/account' && <Account />}
+          {path === '/mypage/coupons' && <MyCoupons />}
         </div>
       </main>
     </div>

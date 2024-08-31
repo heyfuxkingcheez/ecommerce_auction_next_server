@@ -65,7 +65,6 @@ const SaleBidPopup: React.FC<BidPopupProps> = ({ isOpen, onClose, item }) => {
           throw Error(responseData.error);
         }
         if (responseData) setPriceData(responseData);
-        console.log(responseData);
       } catch (error) {
         console.error(error);
       }

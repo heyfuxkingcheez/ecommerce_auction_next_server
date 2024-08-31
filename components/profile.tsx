@@ -107,7 +107,6 @@ export default function ProfileManage() {
       );
 
       const response = await userPatchResponse.json();
-      console.log(response);
 
       if (!userPatchResponse.ok) {
         throw new Error(response.error);

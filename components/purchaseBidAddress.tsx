@@ -91,7 +91,6 @@ const PurchaseBidAddressComponent: React.FC<
 
         const responseData = await userResponse.json();
         if (responseData) setAddressData(responseData);
-        console.log(responseData);
       } catch (error) {
         console.error(error);
         throw new Error('유저 정보 불러오기 실패');

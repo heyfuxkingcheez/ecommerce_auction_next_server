@@ -40,7 +40,6 @@ const PurchaseBidPaymentComponent: React.FC<
   const handlePaymentPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log(e.target.value);
     setPurchaseBidData((prevData) => ({
       ...prevData,
       itemOptionId: prevData?.itemOptionId ?? '',
@@ -71,7 +70,6 @@ const PurchaseBidPaymentComponent: React.FC<
 
         const userPaymentsData = await userResponse.json();
         if (userPaymentsData) setPaymentData(userPaymentsData);
-        console.log('결제 정보', userPaymentsData);
       } catch (error) {
         throw new Error('유저 정보 불러오기 실패');
       }

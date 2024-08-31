@@ -29,8 +29,6 @@ const PurchaseBidConfirmComponent: React.FC<
     couponDiscount;
 
   const handleBidConfirmFetch = async () => {
-    console.log(purchaseBidData);
-
     try {
       const itemOptionPriceResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auctions/purchase-bid`,

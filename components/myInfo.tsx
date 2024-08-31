@@ -61,7 +61,7 @@ export default function MyInfo() {
         </div>
         {/* 쿠폰 아이콘 */}
         <div className="flex flex-col items-center">
-          <div className="w-12 h-12 bg-gray-300 rounded-full" />
+          <img className="w-12 h-12 object-contain" src={`/couponimg.png`} />
           <p className="text-sm mt-2">쿠폰</p>
         </div>
       </div>

@@ -67,7 +67,7 @@ const PurchaseBidContinueComponent: React.FC<PurchaseBidComponentProps> = ({
   const handleDurationChange = (duration: number) => {
     setSelectedDuration(duration);
     const date = new Date();
-    date.setDate(date.getDate() + selectedDuration);
+    date.setDate(date.getDate() + duration);
 
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');

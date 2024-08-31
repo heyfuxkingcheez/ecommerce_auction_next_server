@@ -44,7 +44,6 @@ const SaleBidAccountComponent: React.FC<SaleBidAccountComponentProps> = ({
             price: prevData?.price ?? 0,
             expired_date: prevData?.expired_date ?? '',
           }));
-          console.log('계좌 정보', data);
         }
       } catch (error) {
         throw new Error('유저 정보 불러오기 실패');

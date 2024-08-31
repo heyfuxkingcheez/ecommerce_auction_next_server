@@ -1,14 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 interface NotificationPopupProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+interface AlarmData {
+  message: string;
+}
+
 export const NotificationPopup = ({
   isOpen,
   onClose,
 }: NotificationPopupProps) => {
+  const [isConnectSse, setIsConnectSse] = useState(true);
+  const { isLoggedIn, token } = useAuth();
+  const [alarmData, setAlarmData] = useState<AlarmData[]>([]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const eventSource = new EventSourcePolyfill(
+        `http://localhost:3000/api/sse`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${token}`,
+          },
+          heartbeatTimeout: 1800000,
+        },
+      );
+
+      eventSource.onopen = () => {
+        setIsConnectSse(true);
+        console.log('SSE connection opened');
+      };
+
+      eventSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          setAlarmData((prevData) => [...prevData, data]);
+          console.log('New message:', data.message);
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
+      };
+
+      eventSource.onerror = (error) => {
+        if (eventSource.readyState === EventSource.CLOSED) {
+          console.log('Attempting to reconnect...');
+          setIsConnectSse(false);
+        }
+      };
+    }
+  }, [isLoggedIn, isConnectSse]);
+
   if (!isOpen) return null;
 
   return (
@@ -23,22 +70,23 @@ export const NotificationPopup = ({
 
         <div>
           {/* 알림 리스트 예시 */}
-          <div className="flex items-center border-b py-4">
-            <img
-              src="https://via.placeholder.com/50"
-              alt="상품 이미지"
-              className="mr-4"
-            />
-            <div>
-              <p className="text-sm">
-                Stussy Surfwalk Pigment [L] : 가장 낮은 가격에 바로 구매할 수
-                있습니다. (114,200원)
-              </p>
-              <p className="text-gray-500 text-xs">15시간 전</p>
-            </div>
-          </div>
-
-          {/* 추가 알림 리스트... */}
+          {alarmData &&
+            alarmData.map((alarm, index) => (
+              <div key={index} className="flex items-center border-b py-4">
+                <img
+                  src="https://via.placeholder.com/50"
+                  alt="상품 이미지"
+                  className="mr-4"
+                />
+                <div>
+                  <p className="text-sm">{alarm.message}</p>
+                  <p className="text-gray-500 text-xs">
+                    {new Date().toLocaleDateString()}{' '}
+                    {new Date().toLocaleTimeString()}
+                  </p>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </div>
