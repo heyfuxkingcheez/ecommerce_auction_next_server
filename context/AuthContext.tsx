@@ -37,7 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         setIsLoggedIn(false);
         setToken(null);
-        router.push('/login');
+        // router.push('/login');
       }
     };
 
