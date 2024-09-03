@@ -10,6 +10,8 @@ import PaymentInfo from './paymentInfo';
 import Account from './account';
 import { useAuth } from '../context/AuthContext';
 import MyCoupons from './mycoupons';
+import MyPurchases from './myPurchase';
+import MySales from './mySale';
 
 export default function MyPage() {
   const path = usePathname();
@@ -106,6 +108,8 @@ export default function MyPage() {
           {path === '/mypage/payments' && <PaymentInfo />}
           {path === '/mypage/account' && <Account />}
           {path === '/mypage/coupons' && <MyCoupons />}
+          {path === '/mypage/purchases' && <MyPurchases />}
+          {path === '/mypage/sales' && <MySales />}
         </div>
       </main>
     </div>
