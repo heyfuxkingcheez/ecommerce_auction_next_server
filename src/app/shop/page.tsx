@@ -4,7 +4,9 @@ import { Shop } from '../../../components/shop';
 export default function page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Shop />
+      <div className="w-3/4 mx-auto">
+        <Shop />
+      </div>
     </Suspense>
   );
 }

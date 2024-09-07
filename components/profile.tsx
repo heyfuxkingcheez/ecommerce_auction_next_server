@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { url } from './addressBook';
 
 interface User {
   id: string;
@@ -119,7 +120,7 @@ export default function ProfileManage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userResponse = await fetch('http://localhost:3000/api/users/me', {
+        const userResponse = await fetch(`${url}/users/me`, {
           method: 'GET',
           credentials: 'include',
           headers: {

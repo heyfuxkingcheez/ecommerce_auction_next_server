@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { url } from './addressBook';
 
 interface NotificationPopupProps {
   isOpen: boolean;
@@ -21,16 +22,13 @@ export const NotificationPopup = ({
 
   useEffect(() => {
     if (isLoggedIn) {
-      const eventSource = new EventSourcePolyfill(
-        `http://localhost:3000/api/sse`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${token}`,
-          },
-          heartbeatTimeout: 1800000,
+      const eventSource = new EventSourcePolyfill(`${url}/sse`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
         },
-      );
+        heartbeatTimeout: 1800000,
+      });
 
       eventSource.onopen = () => {
         setIsConnectSse(true);

@@ -31,7 +31,6 @@ export default function Main() {
         }
 
         const responseData = await itemsResponse.json();
-        console.log(responseData);
         if (responseData) setHotItemsData(responseData);
       } catch (error) {
         console.error(error);

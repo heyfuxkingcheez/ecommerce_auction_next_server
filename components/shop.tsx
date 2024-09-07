@@ -60,7 +60,6 @@ export const Shop = () => {
       }
 
       const responseData = await itemsResponse.json();
-      console.log(responseData.data);
       if (responseData) setItemsData(responseData.data);
     } catch (error) {
       console.error(error);
