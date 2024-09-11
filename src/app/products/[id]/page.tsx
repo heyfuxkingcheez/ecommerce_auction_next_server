@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import PurchaseBidPopup from '../../../../components/purchaseBidPopup';
 import SaleBidPopup from '../../../../components/saleBidPopup';
+import { url } from '../../../../components/addressBook';
 
 export interface ItemType {
   id: string;
@@ -80,7 +81,7 @@ export default function Page({ params }: { params: { id: string } }) {
       {/* 좌측 이미지 영역 */}
       <div className="flex flex-col items-center md:w-1/2">
         <img
-          src={`http://localhost:3000/${itemData?.images[0].path}`}
+          src={`${url}/${itemData?.images[0].path}`}
           alt="Product"
           className="w-3/4  h-auto"
         />

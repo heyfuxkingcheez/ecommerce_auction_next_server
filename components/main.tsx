@@ -126,7 +126,7 @@ export default function Main() {
               onClick={() => router.push(`/products/${product.item_id}`)}
             >
               <img
-                src={`http://localhost:3000/public/items/${product.path}`}
+                src={`${url}/public/items/${product.path}`}
                 className="w-full h-40 mb-4 bg-gray-300 rounded-lg object-cover"
               />
               <p className="text-sm font-semibold text-lg">

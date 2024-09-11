@@ -127,7 +127,7 @@ export const Shop = () => {
               onClick={() => router.push(`/products/${product.id}`)}
             >
               <img
-                src={`http://localhost:3000/${product.images[0].path}`}
+                src={`${url}/${product.images[0].path}`}
                 className="w-full h-40 mb-4 bg-gray-300 rounded-lg object-cover"
               />
               <div className="flex-grow">

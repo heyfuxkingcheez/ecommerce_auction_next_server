@@ -96,7 +96,7 @@ const PurchaseBidPopup: React.FC<BidPopupProps> = ({
         </div>
         <div className="flex items-center mb-4">
           <img
-            src={`http://localhost:3000/${item.images[0].path}`}
+            src={`${url}/${item.images[0].path}`}
             alt={item.item_name_kr}
             className="w-16 h-16 rounded-md"
           />

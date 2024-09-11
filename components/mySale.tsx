@@ -124,7 +124,7 @@ const MySales = () => {
               className="flex items-center p-4 border-b border-gray-200"
             >
               <img
-                src={`http://localhost:3000/${sale.itemOption.item.images[0].path}`}
+                src={`${url}/${sale.itemOption.item.images[0].path}`}
                 className="w-16 h-16 object-cover rounded-lg mr-4"
               />
               <div className="flex-1">

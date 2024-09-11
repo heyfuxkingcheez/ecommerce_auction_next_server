@@ -51,7 +51,7 @@ export default function MyInfo() {
         <div className="flex space-x-4">
           {/* 프로필 이미지 */}
           <img
-            src={`http://localhost:3000${user && user.image}`}
+            src={`${url}${user && user.image}`}
             className="w-32 h-32 bg-gray-300 rounded-lg"
           />
           {/* 닉네임 및 이메일 */}

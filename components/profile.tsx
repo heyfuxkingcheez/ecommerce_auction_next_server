@@ -95,17 +95,14 @@ export default function ProfileManage() {
     password?: string;
   }) {
     try {
-      const userPatchResponse = await fetch(
-        'http://localhost:3000/api/users/me',
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: `${token}`,
-          },
-          body: JSON.stringify(data),
+      const userPatchResponse = await fetch(`${url}/api/users/me`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `${token}`,
         },
-      );
+        body: JSON.stringify(data),
+      });
 
       const response = await userPatchResponse.json();
 
@@ -152,7 +149,7 @@ export default function ProfileManage() {
         <div className="flex space-x-4">
           {/* 프로필 이미지 */}
           <img
-            src={`http://localhost:3000${user && user.image}`}
+            src={`${url}${user && user.image}`}
             className="w-32 h-32 bg-gray-300 rounded-lg"
           ></img>
           {/* 닉네임 및 버튼 */}

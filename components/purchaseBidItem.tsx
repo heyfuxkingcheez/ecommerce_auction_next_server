@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useSearchParams } from 'next/navigation';
 import { ItemType } from './purchaseBidContinue';
 import { BidDataType } from '@/app/purchase/[id]/page';
+import { url } from './addressBook';
 
 type PurchaseBidComponentProps = {
   params: { id: string };
@@ -65,7 +66,7 @@ const PurchaseBidItemComponent: React.FC<PurchaseBidComponentProps> = ({
         <div className="flex items-center mb-4">
           {
             <img
-              src={`http://localhost:3000/${itemData?.item.images[0].path}`}
+              src={`${url}/${itemData?.item.images[0].path}`}
               alt="상품 이미지"
               className="w-24 h-24 rounded-md"
             />
