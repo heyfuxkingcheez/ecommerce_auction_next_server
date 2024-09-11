@@ -43,10 +43,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [pathName]);
 
   const logout = () => {
-    Cookies.remove('AccessToken');
-    Cookies.remove('RefreshToken');
+    Cookies.remove('AccessToken', { domain: '.woogi.shop' });
+    Cookies.remove('RefreshToken', { domain: '.woogi.shop' });
     setToken(null);
     setIsLoggedIn(false);
+    router.push('/');
   };
 
   return (
