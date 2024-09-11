@@ -1,11 +1,13 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 export default function page() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const router = useRouter();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newEmail = e.target.value;
@@ -102,6 +104,14 @@ export default function page() {
             </button>
           </div>
         </form>
+        <div>
+          <button
+            className={`w-full my-4 py-2 px-4 text-white bg-black rounded-lg text-center font-bold`}
+            onClick={() => router.push('/register')}
+          >
+            회원가입
+          </button>
+        </div>
       </div>
     </div>
   );
