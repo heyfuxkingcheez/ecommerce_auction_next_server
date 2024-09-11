@@ -80,7 +80,6 @@ export const Shop = () => {
       }
 
       const responseData = await itemsResponse.json();
-      console.log(responseData);
       if (responseData) setItemsData(responseData);
     } catch (error) {
       console.error(error);

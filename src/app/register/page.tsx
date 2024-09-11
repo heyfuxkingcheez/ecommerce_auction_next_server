@@ -122,8 +122,6 @@ export default function Page() {
   };
 
   const handleFetch = async () => {
-    console.log(userData);
-
     try {
       const response = await fetch(`${url}/auth/register`, {
         method: 'POST',

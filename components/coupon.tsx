@@ -30,7 +30,6 @@ const CouponComponent = () => {
         }
 
         const responseData = await itemsResponse.json();
-        console.log(responseData);
         setCoupons([...responseData]);
       } catch (error) {
         console.error(error);
