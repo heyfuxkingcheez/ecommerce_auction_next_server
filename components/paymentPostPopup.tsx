@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ReqCardType, ResCardsType } from './paymentInfo';
 import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface CardPopupProps {
   isOpen: boolean;
@@ -87,10 +88,11 @@ const CardPopup: React.FC<CardPopupProps> = ({
         body: JSON.stringify(cardData),
       });
 
-      const response = await postCardResponse.json();
-
-      setPaymentData((pre) => ({ ...pre, response }));
+      if (!postCardResponse.ok) {
+        throw Error;
+      }
     } catch (error) {
+      alert('등록 실패');
       console.log(error);
     }
   };

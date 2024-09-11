@@ -17,6 +17,7 @@ export interface ResCardsType {
   id: string;
   name: string;
   number: string;
+  billingKey: string;
 }
 
 export default function PaymentInfo() {
@@ -61,6 +62,10 @@ export default function PaymentInfo() {
   }, [token, isLoggedIn]);
 
   async function deleteFetchData(billingKey: string) {
+    const isConfirmed = window.confirm('정말로 삭제하시겠습니까?');
+
+    if (!isConfirmed) return;
+
     try {
       const userResponse = await fetch(
         `${url}/payments/billing-key/${billingKey}`,
@@ -104,7 +109,7 @@ export default function PaymentInfo() {
         </button>
       </div>
 
-      {paymentData.map((method) => (
+      {paymentData?.map((method) => (
         <div key={method.id} className="mb-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
@@ -119,7 +124,7 @@ export default function PaymentInfo() {
             </div>
             <div className="flex space-x-2">
               <button
-                onClick={() => deleteFetchData(method.id)}
+                onClick={() => deleteFetchData(method.billingKey)}
                 className="border border-gray-400 rounded-full px-4 py-2 text-sm"
               >
                 삭제
