@@ -78,6 +78,10 @@ const SaleBidContinueComponent: React.FC<PurchaseBidComponentProps> = ({
   };
 
   const handlePurchaseClick = () => {
+    if (Number(desiredPrice.replace(/,/g, '')) >= 10000000) {
+      return alert('1000만원 미만으로 등록할 수 있습니다.');
+    }
+
     onSubmit(itemData, desiredPrice, expiredDate);
     setSaleBidData((prevData) => ({
       ...prevData,
