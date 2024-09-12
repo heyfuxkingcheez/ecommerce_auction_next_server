@@ -48,6 +48,7 @@ const SaleBidConfirmComponent: React.FC<SaleBidConfirmComponentProps> = ({
         router.push('/shop');
       }
     } catch (error) {
+      alert(error);
       console.error(error);
     }
   };

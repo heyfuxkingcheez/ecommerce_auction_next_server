@@ -48,6 +48,7 @@ export default function Account() {
       setAccountHolder('');
       setAccountNumber('');
     } catch (error) {
+      alert(error);
       console.error(error);
     }
   };
@@ -96,6 +97,7 @@ export default function Account() {
 
         return;
       } catch (error) {
+        alert(error);
         console.error(error);
       }
     }

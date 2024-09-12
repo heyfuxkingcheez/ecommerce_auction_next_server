@@ -142,6 +142,7 @@ export default function Page() {
 
       router.push('/');
     } catch (error) {
+      alert(error);
       console.error(error);
     }
   };

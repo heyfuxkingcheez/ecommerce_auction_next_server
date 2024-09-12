@@ -52,6 +52,7 @@ const PurchaseBidConfirmComponent: React.FC<
         router.push('/shop');
       }
     } catch (error) {
+      alert(error);
       console.error(error);
     }
   };

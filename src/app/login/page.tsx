@@ -44,6 +44,7 @@ export default function page() {
 
       window.location.href = '/';
     } catch (error) {
+      alert(error);
       console.error('Login failed:', error);
     }
   };
