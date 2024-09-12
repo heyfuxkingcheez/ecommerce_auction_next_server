@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import PurchaseBidPopup from '../../../../components/purchaseBidPopup';
 import SaleBidPopup from '../../../../components/saleBidPopup';
 import { url } from '../../../../components/addressBook';
+import { useAuth } from '../../../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export interface ItemType {
   id: string;
@@ -37,6 +39,8 @@ export default function Page({ params }: { params: { id: string } }) {
   const [itemData, setItemData] = useState<ItemType | null>(null);
   const [isPurchaseBidPopupOpen, setIsPurchaseBidPopupOpen] = useState(false);
   const [isSaleBidPopupOpen, setIsSaleBidPopupOpen] = useState(false);
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
 
   const product = {
     name: "Nike Air Force 1 '07 WB Flax",
@@ -94,13 +98,19 @@ export default function Page({ params }: { params: { id: string } }) {
         <h3 className="font-bold text-2xl mt-2">{itemData?.release_price}원</h3>
         <div className="flex mt-4 space-x-4">
           <button
-            onClick={() => setIsPurchaseBidPopupOpen(true)}
+            onClick={() =>
+              isLoggedIn
+                ? setIsPurchaseBidPopupOpen(true)
+                : router.push('/login')
+            }
             className="font-bold bg-red-500 text-white py-4 w-1/2 rounded-md"
           >
             구매 입찰
           </button>
           <button
-            onClick={() => setIsSaleBidPopupOpen(true)}
+            onClick={() =>
+              isLoggedIn ? setIsSaleBidPopupOpen(true) : router.push('/login')
+            }
             className="font-bold bg-blue-500 text-white py-4 w-1/2  rounded-md"
           >
             판매 입찰

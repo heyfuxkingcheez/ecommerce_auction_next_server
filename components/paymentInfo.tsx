@@ -59,7 +59,7 @@ export default function PaymentInfo() {
     if (token && isLoggedIn !== false) {
       getFetchData();
     }
-  }, [token, isLoggedIn]);
+  }, [token, isLoggedIn, isPopupOpen]);
 
   async function deleteFetchData(billingKey: string) {
     const isConfirmed = window.confirm('정말로 삭제하시겠습니까?');

@@ -10,14 +10,14 @@ export default function Page() {
     nickname: '',
     email: '',
     password: '',
-    confirmPassword: '', // 비밀번호 확인 필드 추가
+    confirmPassword: '',
     phone_number: '',
   });
 
   const [errors, setErrors] = useState({
     email: '',
     password: '',
-    confirmPassword: '', // 비밀번호 확인 필드 에러 추가
+    confirmPassword: '',
     nickname: '',
     phone_number: '',
   });
@@ -116,8 +116,7 @@ export default function Page() {
       userData.confirmPassword &&
       userData.nickname &&
       userData.phone_number &&
-      termsChecked.required &&
-      termsChecked.optional;
+      termsChecked.required;
     isFormValid ? setIsFormValid(true) : setIsFormValid(false);
   };
 
