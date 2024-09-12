@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const url = process.env.NEXT_PUBLIC_API_URL;
@@ -30,8 +30,9 @@ export interface ItemType {
 
 export const Shop = () => {
   const [itemsData, setItemsData] = useState<ItemType[]>([]);
-  const [cursorData, setCursorData] = useState<string>('');
+  const [cursorData, setCursorData] = useState<string | null>(null); // 다음 페이지의 URL을 저장할 상태
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const loaderRef = useRef(null); // 스크롤 지점을 감지하기 위한 ref
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -60,7 +61,11 @@ export const Shop = () => {
       }
 
       const responseData = await itemsResponse.json();
-      if (responseData) setItemsData(responseData.data);
+      console.log(responseData);
+      if (responseData) {
+        setItemsData(responseData.data);
+        setCursorData(responseData.next); // 다음 데이터를 가져올 URL 저장
+      }
     } catch (error) {
       console.error(error);
     }
@@ -80,11 +85,63 @@ export const Shop = () => {
       }
 
       const responseData = await itemsResponse.json();
-      if (responseData) setItemsData(responseData);
+      console.log(responseData);
+      if (responseData) {
+        setItemsData(responseData);
+        setCursorData(responseData.next); // 필터된 데이터에도 next URL 설정
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
+  // 추가 데이터를 로드하는 함수
+  const fetchMoreData = async () => {
+    if (!cursorData) return;
+
+    try {
+      const moreDataResponse = await fetch(cursorData, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!moreDataResponse.ok) {
+        throw Error();
+      }
+
+      const moreData = await moreDataResponse.json();
+      console.log(moreData);
+
+      setItemsData((prevItems) => [...prevItems, ...moreData.data]); // 기존 데이터에 추가
+      setCursorData(moreData.next); // 다음 페이지 URL 업데이트
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 스크롤 위치를 감지하여 데이터 추가 요청
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && cursorData) {
+          fetchMoreData(); // 사용자가 스크롤을 끝까지 내리면 추가 데이터 로드
+        }
+      },
+      { threshold: 1.0 }, // 100%가 보일 때 로드
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [cursorData]);
 
   const handleCategoryChange = (event: any) => {
     const newCategory = event.target.value;
@@ -119,7 +176,7 @@ export const Shop = () => {
       {/* 메인 컨텐츠 */}
       <main className="flex-1 p-8 ml-64">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {itemsData.map((product, index) => (
+          {itemsData.map((product) => (
             <div
               key={product.id}
               className="w-58 h-58 rounded-lg p-4 flex flex-col justify-between cursor-pointer"
@@ -148,6 +205,8 @@ export const Shop = () => {
             </div>
           ))}
         </div>
+        {/* 로딩 지점 */}
+        <div ref={loaderRef} className="h-10" />
       </main>
     </div>
   );
